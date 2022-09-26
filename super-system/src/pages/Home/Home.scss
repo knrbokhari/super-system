@@ -1,6 +1,6 @@
 .home {
-  color: #000;
-  .title {
-    color: aquamarine;
+  display: flex;
+  .homeContainer {
+    flex: 5;
   }
 }
