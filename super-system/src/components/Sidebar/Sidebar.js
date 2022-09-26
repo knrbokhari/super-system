@@ -12,43 +12,53 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
-        <span className="logo">Super System</span>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <span className="logo">Super System</span>
+        </Link>
       </div>
       <hr />
       <div className="center">
         <ul>
+          <p className="title">MAIN</p>
           <li>
             <DashboardIcon className="icon" />
             <span>Dashboard</span>
           </li>
-          <li>
-            <PersonRoundedIcon className="icon" />
-            <span>Users</span>
-          </li>
-          <li>
-            <StoreIcon className="icon" />
-            <span>Products</span>
-          </li>
+          <p className="title">LISTS</p>
+          <Link to="/users" style={{ textDecoration: "none" }}>
+            <li>
+              <PersonRoundedIcon className="icon" />
+              <span>Users</span>
+            </li>
+          </Link>
+          <Link to="/products" style={{ textDecoration: "none" }}>
+            <li>
+              <StoreIcon className="icon" />
+              <span>Products</span>
+            </li>
+          </Link>
           <li>
             <CreditCardIcon className="icon" />
             <span>Orders</span>
           </li>
           <li>
+            <LocalShippingIcon className="icon" />
+            <span>Delivery</span>
+          </li>
+          <p className="title">USEFUL</p>
+          <li>
             <InsertChartIcon className="icon" />
             <span>Stats</span>
           </li>
           <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-          <li>
             <NotificationsNoneIcon className="icon" />
-            <span>Notificatoin</span>
+            <span>Notifications</span>
           </li>
           <p className="title">SERVICE</p>
           <li>
@@ -74,7 +84,14 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
-      <div className="bottom"></div>
+      <div className="bottom">
+        <div
+          className="colorOption"
+        ></div>
+        <div
+          className="colorOption"
+        ></div>
+      </div>
     </div>
   );
 };

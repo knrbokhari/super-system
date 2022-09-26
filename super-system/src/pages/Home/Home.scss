@@ -1,6 +1,7 @@
 .home {
   display: flex;
   .homeContainer {
-    flex: 5;
+    flex: auto;
+    background: #f7f7f7;
   }
 }
