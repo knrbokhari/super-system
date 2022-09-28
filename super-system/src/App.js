@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import List from "./pages/List/List";
 import Single from "./pages/Single/Single";
-import New from "./pages/New/New";
+import NewProduct from "./pages/NewProduct/NewProduct";
 
 function App() {
   return (
@@ -12,9 +12,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
-        <Route path="users" element={<List />} />
-        <Route path="new" element={<New />} />
-        <Route path="single" element={<Single />} />
+        <Route path="users">
+          <Route index element={<List />} />
+          <Route path=":userId" element={<Single />} />
+        </Route>
+        <Route path="products">
+          <Route index element={<List />} />
+          <Route path=":productId" element={<Single />} />
+          <Route path="new" element={<NewProduct title="Add New Product" />} />
+        </Route>
       </Routes>
     </div>
   );
