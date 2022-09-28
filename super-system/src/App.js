@@ -5,10 +5,15 @@ import Login from "./pages/Login/Login";
 import List from "./pages/List/List";
 import Single from "./pages/Single/Single";
 import NewProduct from "./pages/NewProduct/NewProduct";
+import "./DarkMode/DarkMode.scss";
+import { useContext } from "react";
+import { DarkModeContext } from "./context/darkModeContext";
 
 function App() {
+  const { darkMode } = useContext(DarkModeContext);
+
   return (
-    <div>
+    <div className={darkMode ? "app dark" : "app"}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
