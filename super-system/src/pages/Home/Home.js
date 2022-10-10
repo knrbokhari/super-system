@@ -10,7 +10,8 @@ import TableList from "../../components/Table/TableList";
 const Home = () => {
   return (
     <div className="home">
-      <Sidebar />
+      Home
+      {/* <Sidebar />
       <div className="homeContainer">
         <Navbar />
         <div className="widgets">
@@ -26,7 +27,7 @@ const Home = () => {
           <div className="listTitle">Latest Transactions</div>
           <TableList />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
