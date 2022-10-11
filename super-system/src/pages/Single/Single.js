@@ -8,9 +8,9 @@ import TableList from "../../components/Table/TableList";
 const Single = () => {
   return (
     <div className="single">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="singleContainer">
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="top">
           <div className="left">
             <div className="editButton">Edit</div>

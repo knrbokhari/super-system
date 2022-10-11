@@ -5,10 +5,12 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 const DashboardLayout = () => {
   return (
     <>
-      <Navbar />
-      <div>
+      <div className="" style={{ display: "flex", width: "100%" }}>
         <Sidebar />
-        <Outlet />
+        <div style={{ width: "100%" }}>
+          <Navbar />
+          <Outlet />
+        </div>
       </div>
     </>
   );
