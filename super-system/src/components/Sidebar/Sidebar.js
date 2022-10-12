@@ -14,92 +14,242 @@ import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
+import { Divider, List, ListItem, ListItemText } from "@mui/material";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
 
-const Sidebar = () => {
+const Sidebar = ({ open }) => {
   const { dispatch } = useContext(DarkModeContext);
 
   return (
-    <div className="sidebar">
-      <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Super System</span>
-        </Link>
-      </div>
-      <hr />
-      <div className="center">
-        <ul>
-          <p className="title">MAIN</p>
-          <li>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <DashboardIcon className="icon" />
-              <span>Dashboard</span>
-            </Link>
-          </li>
-          <p className="title">LISTS</p>
+    <>
+      <List>
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <Link
+            to="/dashboard"
+            style={{ textDecoration: "none", color: "red" }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Dashboard"
+                sx={{ opacity: open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }}>
           <Link to="/users" style={{ textDecoration: "none" }}>
-            <li>
-              <PersonRoundedIcon className="icon" />
-              <span>Users</span>
-            </li>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <PersonRoundedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Users" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
           </Link>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }}>
           <Link to="/products" style={{ textDecoration: "none" }}>
-            <li>
-              <StoreIcon className="icon" />
-              <span>Products</span>
-            </li>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <StoreIcon />
+              </ListItemIcon>
+              <ListItemText primary="Products" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
           </Link>
-          <li>
-            <CreditCardIcon className="icon" />
-            <span>Orders</span>
-          </li>
-          <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-          <p className="title">USEFUL</p>
-          <li>
-            <InsertChartIcon className="icon" />
-            <span>Stats</span>
-          </li>
-          <li>
-            <NotificationsNoneIcon className="icon" />
-            <span>Notifications</span>
-          </li>
-          <p className="title">SERVICE</p>
-          <li>
-            <SettingsSystemDaydreamOutlinedIcon className="icon" />
-            <span>System Health</span>
-          </li>
-          <li>
-            <PsychologyOutlinedIcon className="icon" />
-            <span>Logs</span>
-          </li>
-          <li>
-            <SettingsApplicationsIcon className="icon" />
-            <span>Settings</span>
-          </li>
-          <p className="title">USER</p>
-          <li>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
-          </li>
-          <li>
-            <ExitToAppIcon className="icon" />
-            <span>Logout</span>
-          </li>
-        </ul>
-      </div>
-      <div className="bottom">
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "LIGHT" })}
-        ></div>
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "DARK" })}
-        ></div>
-      </div>
-    </div>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <Link to="/orders" style={{ textDecoration: "none" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <LocalShippingIcon />
+              </ListItemIcon>
+              <ListItemText primary="Orders" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <Link to="/notifications" style={{ textDecoration: "none" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <NotificationsNoneIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Notifications"
+                sx={{ opacity: open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <Link to="/logs" style={{ textDecoration: "none" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <InsertChartIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Error Logs"
+                sx={{ opacity: open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <Link to="/profile" style={{ textDecoration: "none" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <AccountCircleOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <Link to="/settings" style={{ textDecoration: "none" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <SettingsApplicationsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Settings" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+      </List>
+      <Divider />
+    </>
   );
 };
 
