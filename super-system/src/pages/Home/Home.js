@@ -36,9 +36,7 @@ const Home = () => {
         </Grid>
       </Box>
       <Box>
-        <Typographys variant="h4" sx={{}}>
-          Latest Transactions
-        </Typographys>
+        <Typographys variant="h4">Latest Transactions</Typographys>
         <TableList />
       </Box>
     </Box>

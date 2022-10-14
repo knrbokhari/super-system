@@ -4,6 +4,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { Link } from "react-router-dom";
 
 const Widget = ({ type }) => {
   let data;
@@ -59,20 +60,24 @@ const Widget = ({ type }) => {
       break;
   }
   return (
-    <div className="widget">
-      <div className="left">
-        <span className="title">{data.title}</span>
-        <span className="counter">${amount}</span>
-        <span className="link">{data.link}</span>
-      </div>
-      <div className="right">
-        <div className="percentage positive">
-          <KeyboardArrowUpIcon />
-          {diff} %
+    <>
+      <div className="widget">
+        <div className="left">
+          <span className="title">{data.title}</span>
+          <span className="counter">${amount}</span>
+          <Link to="/" className="link">
+            <span>{data.link}</span>
+          </Link>
         </div>
-        {data.icon}
+        <div className="right">
+          <div className="percentage positive">
+            <KeyboardArrowUpIcon />
+            {diff} %
+          </div>
+          {data.icon}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
