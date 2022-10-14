@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { Box, Typography } from "@mui/material";
 
 const Chart = ({ aspect, title }) => {
   const data = [
@@ -21,11 +22,11 @@ const Chart = ({ aspect, title }) => {
   ];
 
   return (
-    <div className="chart">
-      <div className="title">{title}</div>
-      <ResponsiveContainer width="100%" aspect={aspect}>
+    <Box className="chart">
+      <Typography className="chart-title">{title}</Typography>
+      <ResponsiveContainer width="100%" height={300}>
         <AreaChart
-          // width={100}
+          width={100}
           height={250}
           data={data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
@@ -49,7 +50,7 @@ const Chart = ({ aspect, title }) => {
           />
         </AreaChart>
       </ResponsiveContainer>
-    </div>
+    </Box>
   );
 };
 
