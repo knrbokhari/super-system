@@ -4,6 +4,8 @@ import DashboardLayout from "../layout/DashboardLayout/index";
 import Home from "../pages/Home/Home";
 import Users from "../pages/Users/Users";
 import Single from "../pages/Single/Single";
+import Products from "../pages/Products/Products";
+import Orders from "../pages/Orders/Orders";
 
 const AllRoutes = [
   {
@@ -30,6 +32,26 @@ const AllRoutes = [
       },
       {
         path: "/products",
+        element: <Products />,
+      },
+      {
+        path: "/orders",
+        element: <Orders />,
+      },
+      {
+        path: "/notifications",
+        element: <Single />,
+      },
+      {
+        path: "/logs",
+        element: <Single />,
+      },
+      {
+        path: "/profile",
+        element: <Single />,
+      },
+      {
+        path: "/settings",
         element: <Single />,
       },
     ],
