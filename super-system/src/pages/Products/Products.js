@@ -1,9 +1,6 @@
 import React from "react";
 import {
   Box,
-  Card,
-  CardActionArea,
-  CardContent,
   Checkbox,
   Grid,
   IconButton,
@@ -25,6 +22,8 @@ import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import CardWrappers from "../../components/CardWrappers/CardWrappers";
+import InventoryIcon from "@mui/icons-material/Inventory";
 
 const createData = (name, calories, fat, carbs, protein, sales) => {
   return {
@@ -215,7 +214,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          All Users
+          All Products
         </Typography>
       )}
 
@@ -304,50 +303,29 @@ const Products = () => {
         <Grid container spacing={2}>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      All Products
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      500
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <CardWrappers
+                text="All Products"
+                items={500}
+                icon={<InventoryIcon />}
+              />
             </Box>
           </Grid>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      In Stock
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      500
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <CardWrappers
+                text="In Stock"
+                items={500}
+                icon={<InventoryIcon />}
+              />
             </Box>
           </Grid>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Stock Out
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      500
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <CardWrappers
+                text="Stock Out"
+                items={500}
+                icon={<InventoryIcon />}
+              />
             </Box>
           </Grid>
         </Grid>

@@ -1,9 +1,6 @@
 import React from "react";
 import {
   Box,
-  Card,
-  CardActionArea,
-  CardContent,
   Checkbox,
   Grid,
   Paper,
@@ -21,6 +18,7 @@ import {
 import PropTypes from "prop-types";
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
+import CardWrappers from "../../components/CardWrappers/CardWrappers";
 
 const createData = (name, calories, fat, carbs, protein) => {
   return {
@@ -293,50 +291,17 @@ const Users = () => {
         <Grid container spacing={2}>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      All Users
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      500
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <CardWrappers items={500} text={"All Users"} />
             </Box>
           </Grid>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Active Users
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      500
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <CardWrappers items={500} text={"Active Users"} />
             </Box>
           </Grid>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Users
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      500
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <CardWrappers items={500} text={"Users"} />
             </Box>
           </Grid>
         </Grid>
