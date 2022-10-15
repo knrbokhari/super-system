@@ -2,7 +2,7 @@ import MinimalLayout from "../layout/MinimalLayout/index";
 import Login from "../pages/Login/Login";
 import DashboardLayout from "../layout/DashboardLayout/index";
 import Home from "../pages/Home/Home";
-import List from "../pages/List/List";
+import Users from "../pages/Users/Users";
 import Single from "../pages/Single/Single";
 
 const AllRoutes = [
@@ -26,7 +26,7 @@ const AllRoutes = [
       },
       {
         path: "/users",
-        element: <List />,
+        element: <Users />,
       },
       {
         path: "/products",

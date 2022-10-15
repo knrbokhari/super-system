@@ -1,10 +1,10 @@
 import "./App.css";
-import Home from "./pages/Home/Home";
+// import Home from "./pages/Home/Home";
 // import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login/Login";
-import List from "./pages/List/List";
-import Single from "./pages/Single/Single";
-import NewProduct from "./pages/NewProduct/NewProduct";
+// import Login from "./pages/Login/Login";
+// import List from "./pages/List/List";
+// import Single from "./pages/Single/Single";
+// import NewProduct from "./pages/NewProduct/NewProduct";
 import "./DarkMode/DarkMode.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
