@@ -6,6 +6,8 @@ import Users from "../pages/Users/Users";
 import Single from "../pages/Single/Single";
 import Products from "../pages/Products/Products";
 import Orders from "../pages/Orders/Orders";
+import Notifications from "../pages/Notifications/Notifications";
+import ComingSoon from "../pages/ComingSoon/ComingSoon";
 
 const AllRoutes = [
   {
@@ -40,19 +42,19 @@ const AllRoutes = [
       },
       {
         path: "/notifications",
-        element: <Single />,
+        element: <Notifications />,
       },
       {
         path: "/logs",
-        element: <Single />,
+        element: <ComingSoon />,
       },
       {
         path: "/profile",
-        element: <Single />,
+        element: <ComingSoon />,
       },
       {
         path: "/settings",
-        element: <Single />,
+        element: <ComingSoon />,
       },
     ],
   },
