@@ -22,9 +22,14 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
   const navigate = useNavigate();
+  const user = true;
+
+  if (user) {
+    navigate("/dashboard");
+  }
   const handleLogin = (e) => {
     console.log(e);
-    navigate("/");
+    navigate("/dashboard");
   };
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);

@@ -31,7 +31,7 @@ const CardWrappers = ({ text, items, icon }) => {
               <ListItem sx={{ p: 0 }}>
                 <ListItemAvatar sx={{ mr: 2 }}>
                   <Avatar
-                    sx={{ bgcolor: deepPurple[500], width: 55, height: 55 }}
+                    sx={{ bgcolor: deepPurple[500], width: 60, height: 60 }}
                     variant="rounded"
                   >
                     {icon}
@@ -40,13 +40,13 @@ const CardWrappers = ({ text, items, icon }) => {
                 <Box>
                   <Typography
                     gutterBottom
-                    variant="h5"
+                    variant="h4"
                     component="div"
                     sx={{ mb: -0.5 }}
                   >
                     {items}
                   </Typography>
-                  <Typography variant="body1" color="text.secondary">
+                  <Typography variant="h6" color="text.secondary">
                     {text}
                   </Typography>
                 </Box>

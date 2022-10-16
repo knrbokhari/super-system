@@ -24,6 +24,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CardWrappers from "../../components/CardWrappers/CardWrappers";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import Chart from "../../components/Chart/Chart";
 
 const createData = (name, calories, fat, carbs, protein, sales) => {
   return {
@@ -302,35 +303,40 @@ const Orders = () => {
       <Box sx={{ width: "100%" }}>
         <Grid container spacing={2}>
           <Grid item md={4}>
-            <Box sx={{ mb: 5 }}>
-              <CardWrappers
-                text="Totals Orders"
-                items={500}
-                icon={<LocalShippingIcon />}
-              />
-            </Box>
+            <Grid item md={12}>
+              <Box sx={{ mb: 4 }}>
+                <CardWrappers
+                  text="Totals Orders"
+                  items={500}
+                  icon={<LocalShippingIcon />}
+                />
+              </Box>
+            </Grid>
+            <Grid item md={12}>
+              <Box sx={{ mb: 4 }}>
+                <CardWrappers
+                  text="Approved  Orders"
+                  items={500}
+                  icon={<LocalShippingIcon />}
+                />
+              </Box>
+            </Grid>
+            <Grid item md={12}>
+              <Box>
+                <CardWrappers
+                  text="Pending  Orders"
+                  items={500}
+                  icon={<LocalShippingIcon />}
+                />
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item md={4}>
-            <Box sx={{ mb: 5 }}>
-              <CardWrappers
-                text="Approved  Orders"
-                items={500}
-                icon={<LocalShippingIcon />}
-              />
-            </Box>
-          </Grid>
-          <Grid item md={4}>
-            <Box sx={{ mb: 5 }}>
-              <CardWrappers
-                text="Pending  Orders"
-                items={500}
-                icon={<LocalShippingIcon />}
-              />
-            </Box>
+          <Grid item md={8}>
+            <Chart title={"Last Month's Order"} />
           </Grid>
         </Grid>
 
-        <Paper sx={{ width: "100%", mb: 2 }}>
+        <Paper sx={{ width: "100%", mb: 2, mt: 5 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
             <Table
