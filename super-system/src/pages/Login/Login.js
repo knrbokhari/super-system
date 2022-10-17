@@ -19,20 +19,15 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useLoginMutation } from "../../Api/Api";
+import Cookies from "js-cookie";
 
 const Login = () => {
+  const [login, { error, isLoading, isError, isSuccess }] = useLoginMutation();
   const navigate = useNavigate();
-  const user = true;
-
-  if (user) {
-    navigate("/dashboard");
-  }
-  const handleLogin = (e) => {
-    console.log(e);
-    navigate("/dashboard");
-  };
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -40,6 +35,19 @@ const Login = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const onSubmit = (data) => {
+    const { email, password } = data;
+    login({ email, password });
+  };
+
+  if (isLoading) {
+  }
+
+  if (isSuccess) {
+    navigate("/dashboard");
+  }
+
   return (
     <>
       <Grid
@@ -111,7 +119,6 @@ const Login = () => {
                       initialValues={{
                         email: "admin@gmail.com",
                         password: "123456",
-                        submit: null,
                       }}
                       validationSchema={Yup.object().shape({
                         email: Yup.string()
@@ -119,14 +126,12 @@ const Login = () => {
                           .max(255)
                           .required("Email is required"),
                         password: Yup.string()
+                          .min(6)
                           .max(255)
                           .required("Password is required"),
                       })}
-                      onSubmit={async (
-                        values,
-                        { setErrors, setStatus, setSubmitting }
-                      ) => {
-                        console.log(values);
+                      onSubmit={async (values) => {
+                        onSubmit(values);
                       }}
                     >
                       {({
@@ -220,6 +225,11 @@ const Login = () => {
                                 id="standard-weight-helper-text-password-login"
                               >
                                 {errors.password}
+                              </FormHelperText>
+                            )}
+                            {isError && (
+                              <FormHelperText error sx={{ fontSize: 15 }}>
+                                {error.data}
                               </FormHelperText>
                             )}
                           </FormControl>

@@ -1,34 +1,25 @@
 import "./App.css";
-// import Home from "./pages/Home/Home";
-// import { Routes, Route } from "react-router-dom";
-// import Login from "./pages/Login/Login";
-// import List from "./pages/List/List";
-// import Single from "./pages/Single/Single";
-// import NewProduct from "./pages/NewProduct/NewProduct";
 import "./DarkMode/DarkMode.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Routers from "./routes";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const user = useSelector((state) => state?.user);
+  const navigate = useNavigate();
+
+  if (user) navigate("/dashboard");
+
   const { darkMode } = useContext(DarkModeContext);
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
-      {/* <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="users">
-          <Route index element={<List />} />
-          <Route path=":userId" element={<Single />} />
-        </Route>
-        <Route path="products">
-          <Route index element={<List />} />
-          <Route path=":productId" element={<Single />} />
-          <Route path="new" element={<NewProduct title="Add New Product" />} />
-        </Route>
-      </Routes> */}
       <Routers />
+      <ToastContainer />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userSlice } from "../Features/UserSlice";
+import userSlice from "../Features/UserSlice";
 import appApi from "../Api/Api";
 
 //persit our store
@@ -17,7 +17,6 @@ const reducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  //   blackList: [appApi.reducerPath, "products"],
 };
 
 // persist our store

@@ -9,14 +9,26 @@ import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { Divider, List, ListItem, ListItemText } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { logout } from "../../Features/UserSlice";
 
 const Sidebar = ({ open }) => {
-  const { dispatch } = useContext(DarkModeContext);
+  // const { dispatch } = useContext(DarkModeContext);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handelLogout = () => {
+    dispatch(logout());
+    navigate("/");
+    Cookies.remove("token");
+  };
 
   return (
     <>
@@ -222,26 +234,25 @@ const Sidebar = ({ open }) => {
       <Divider />
       <List>
         <ListItem disablePadding sx={{ display: "block" }}>
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <ListItemButton
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+            }}
+            onClick={handelLogout}
+          >
+            <ListItemIcon
               sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
               }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <ExitToAppIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </Link>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
         </ListItem>
       </List>
       <Divider />

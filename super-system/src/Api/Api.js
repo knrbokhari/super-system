@@ -14,14 +14,6 @@ export const appApi = createApi({
   //   baseUrl: "https://calm-beach-92689.herokuapp.com/",
   // }),
   endpoints: (builder) => ({
-    signup: builder.mutation({
-      query: (user) => ({
-        url: "/users/signup",
-        method: "POST",
-        body: user,
-      }),
-    }),
-
     login: builder.mutation({
       query: (user) => ({
         url: "/users/login",
@@ -124,7 +116,6 @@ export const appApi = createApi({
 });
 
 export const {
-  useSignupMutation,
   useLoginMutation,
   //   useCreateProductMutation,
   //   useAddToCartMutation,
