@@ -8,6 +8,7 @@ import Products from "../pages/Products/Products";
 import Orders from "../pages/Orders/Orders";
 import Notifications from "../pages/Notifications/Notifications";
 import ComingSoon from "../pages/ComingSoon/ComingSoon";
+import EditProduct from "../pages/EditProduct/EditProduct";
 
 const AllRoutes = [
   {
@@ -54,6 +55,14 @@ const AllRoutes = [
       },
       {
         path: "/settings",
+        element: <ComingSoon />,
+      },
+      {
+        path: "/product/:id",
+        element: <EditProduct />,
+      },
+      {
+        path: "/product/create",
         element: <ComingSoon />,
       },
     ],

@@ -16,6 +16,7 @@ import {
   Typography,
   Tooltip,
   Modal,
+  Button,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { visuallyHidden } from "@mui/utils";
@@ -272,17 +273,14 @@ const Users = () => {
 
   const handelModule = (id) => {
     const user = users.find((u) => u._id === id);
-    setUserModal(user);
-    console.log(user);
-
     let totalPaid = 0;
-
     user.orders.map((order) => (totalPaid += order?.total));
     const processing = user?.orders?.filter(
       (order) => order?.status === "processing"
     );
     const shipped = user?.orders.filter((order) => order?.status === "shipped");
 
+    setUserModal(user);
     setProcessingOrders(processing?.length);
     setShippedOrders(shipped?.length);
     setTotalPaid(totalPaid);
@@ -351,12 +349,12 @@ const Users = () => {
           </Grid>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <CardWrappers items={500} text={"Active Users"} />
+              <CardWrappers items={users?.length} text={"Active Users"} />
             </Box>
           </Grid>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <CardWrappers items={500} text={"Users"} />
+              <CardWrappers items={users?.length} text={"Users"} />
             </Box>
           </Grid>
         </Grid>
@@ -415,9 +413,13 @@ const Users = () => {
                         <TableCell align="right">{row.cart.length}</TableCell>
                         <TableCell align="right">{row.orders.length}</TableCell>
                         <TableCell align="right">
-                          <button onClick={() => handelModule(row._id)}>
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            onClick={() => handelModule(row._id)}
+                          >
                             Details
-                          </button>
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );
