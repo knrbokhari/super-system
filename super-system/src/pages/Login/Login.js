@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -21,12 +21,21 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useLoginMutation } from "../../Api/Api";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
+import Loading from "../../components/Loading/Loading";
 
 const Login = () => {
   const [login, { error, isLoading, isError, isSuccess }] = useLoginMutation();
   const navigate = useNavigate();
+  const user = useSelector((state) => state?.user);
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -42,6 +51,7 @@ const Login = () => {
   };
 
   if (isLoading) {
+    return <Loading />;
   }
 
   if (isSuccess) {
@@ -217,7 +227,7 @@ const Login = () => {
                                 </InputAdornment>
                               }
                               label="Password"
-                              inputProps={{}}
+                              // inputProps={{}}
                             />
                             {touched.password && errors.password && (
                               <FormHelperText
