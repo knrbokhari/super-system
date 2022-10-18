@@ -25,7 +25,8 @@ import { useSelector } from "react-redux";
 import Loading from "../../components/Loading/Loading";
 
 const Login = () => {
-  const [login, { error, isLoading, isError, isSuccess }] = useLoginMutation();
+  const [login, { error, isLoading, data, isError, isSuccess }] =
+    useLoginMutation();
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user);
   const [checked, setChecked] = useState(true);
@@ -52,6 +53,10 @@ const Login = () => {
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (data?.token) {
+    Cookies.set("token", data?.token, { expires: 1 });
   }
 
   if (isSuccess) {

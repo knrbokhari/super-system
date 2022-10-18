@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 
 // get Bearer token from Cookie
-// const token = `Bearer ${Cookies.get("token")}`;
+const token = `Bearer ${Cookies.get("token")}`;
 
 // console.log(token);
 
@@ -44,15 +44,15 @@ export const appApi = createApi({
     //   }),
     // }),
 
-    // // update product
-    // updateProduct: builder.mutation({
-    //   query: (product) => ({
-    //     url: `/products/${product.id}`,
-    //     headers: { Authorization: token },
-    //     body: product,
-    //     method: "PATCH",
-    //   }),
-    // }),
+    // update product
+    updateProduct: builder.mutation({
+      query: (product) => ({
+        url: `/products/${product.id}`,
+        headers: { Authorization: token },
+        body: product,
+        method: "PATCH",
+      }),
+    }),
 
     // // add to cart
     // addToCart: builder.mutation({
@@ -124,7 +124,7 @@ export const {
   //   useDecreaseCartProductMutation,
   //   useCreateOrderMutation,
   //   useDeleteProductMutation,
-  //   useUpdateProductMutation,
+  useUpdateProductMutation,
   //   useUpdateNotificationsMutation,
 } = appApi;
 

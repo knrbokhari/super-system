@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Routers from "./routes";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
 
 function App() {
   const user = useSelector((state) => state?.user);
@@ -23,7 +22,7 @@ function App() {
   return (
     <div className={darkMode ? "app dark" : "app"}>
       <Routers />
-      {/* <ToastContainer /> */}
+      <ToastContainer />
     </div>
   );
 }
