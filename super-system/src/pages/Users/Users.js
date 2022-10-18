@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Checkbox,
@@ -14,37 +14,21 @@ import {
   TableSortLabel,
   Toolbar,
   Typography,
+  Tooltip,
+  Modal,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
 import CardWrappers from "../../components/CardWrappers/CardWrappers";
-
-const createData = (name, calories, fat, carbs, protein) => {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-};
-
-const rows = [
-  createData("Cupcake", "305", 3.7, 67, 4.3),
-  createData("Donut", "452", 25.0, 51, 4.9),
-  createData("Eclair", "262", 16.0, 24, 6.0),
-  createData("Frozen yoghurt", "159", 6.0, 24, 4.0),
-  createData("Gingerbread", "356", 16.0, 49, 3.9),
-  createData("Honeycomb", "408", 3.2, 87, 6.5),
-  createData("Ice cream sandwich", "237", 9.0, 37, 4.3),
-  createData("Jelly Bean", "375", 0.0, 94, 0.0),
-  createData("KitKat", "518", 26.0, 65, 7.0),
-  createData("Lollipop", "392", 0.2, 98, 0.0),
-  createData("Marshmallow", "318", 0, 81, 2.0),
-  createData("Nougat", "360", 19.0, 9, 37.0),
-  createData("Oreo", "437", 18.0, 63, 4.0),
-];
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import axios from "../../axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../Features/UserSlice";
+import Loading from "../../components/Loading/Loading";
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -56,11 +40,11 @@ const descendingComparator = (a, b, orderBy) => {
   return 0;
 };
 
-function getComparator(order, orderBy) {
+const getComparator = (order, orderBy) => {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}
+};
 
 const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -82,28 +66,28 @@ const headCells = [
     label: "User Name",
   },
   {
-    id: "calories",
+    id: "email",
     numeric: false,
     disablePadding: false,
     label: "Email",
   },
   {
-    id: "fat",
-    numeric: false,
+    id: "cart",
+    numeric: true,
     disablePadding: false,
     label: "Carts",
   },
   {
-    id: "carbs",
-    numeric: false,
+    id: "orders",
+    numeric: true,
     disablePadding: false,
     label: "Orders",
   },
   {
-    id: "protein",
+    id: "details",
     numeric: true,
     disablePadding: false,
-    label: "TPQ",
+    label: "Details",
   },
 ];
 
@@ -206,7 +190,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
 
-      {/* {numSelected > 0 ? (
+      {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -218,7 +202,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )} */}
+      )}
     </Toolbar>
   );
 };
@@ -227,13 +211,84 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  borderRadius: "10px",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Users = () => {
+  const admin = useSelector((state) => state.user);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [pageLoading, setLoading] = React.useState(false);
+  const [users, setUsers] = React.useState([]);
+  const [userModal, setUserModal] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [processingOrders, setProcessingOrders] = React.useState(0);
+  const [shippedOrders, setShippedOrders] = React.useState(0);
+  const [totalPaid, setTotalPaid] = React.useState(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/users`, {
+        headers: {
+          Authorization: `Bearer ${admin.token}`,
+        },
+      })
+      .then(({ data }) => {
+        setLoading(false);
+        setUsers(data);
+      })
+      .catch((e) => {
+        setLoading(false);
+        console.log(e);
+        if (e.response.status === 401 || e.response.status === 403) {
+          dispatch(logout());
+          navigate("/");
+        }
+      });
+  }, []);
+
+  if (pageLoading) {
+    return <Loading />;
+  }
+
+  const handelModule = (id) => {
+    const user = users.find((u) => u._id === id);
+    setUserModal(user);
+    console.log(user);
+
+    let totalPaid = 0;
+
+    user.orders.map((order) => (totalPaid += order?.total));
+    const processing = user?.orders?.filter(
+      (order) => order?.status === "processing"
+    );
+    const shipped = user?.orders.filter((order) => order?.status === "shipped");
+
+    setProcessingOrders(processing?.length);
+    setShippedOrders(shipped?.length);
+    setTotalPaid(totalPaid);
+
+    handleOpen();
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -243,7 +298,7 @@ const Users = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = users.map((n) => n.name);
       setSelected(newSelected);
       return;
     }
@@ -283,7 +338,7 @@ const Users = () => {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
   return (
     <>
@@ -291,7 +346,7 @@ const Users = () => {
         <Grid container spacing={2}>
           <Grid item md={4}>
             <Box sx={{ mb: 5 }}>
-              <CardWrappers items={500} text={"All Users"} />
+              <CardWrappers items={users?.length} text={"All Users"} />
             </Box>
           </Grid>
           <Grid item md={4}>
@@ -320,10 +375,10 @@ const Users = () => {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rows.length}
+                rowCount={users.length}
               />
               <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
+                {stableSort(users, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.name);
@@ -356,10 +411,14 @@ const Users = () => {
                         >
                           {row.name}
                         </TableCell>
-                        <TableCell align="left">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
+                        <TableCell align="left">{row.email}</TableCell>
+                        <TableCell align="right">{row.cart.length}</TableCell>
+                        <TableCell align="right">{row.orders.length}</TableCell>
+                        <TableCell align="right">
+                          <button onClick={() => handelModule(row._id)}>
+                            Details
+                          </button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -378,13 +437,51 @@ const Users = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={users.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              sx={{ textAlign: "center" }}
+            >
+              User Details
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              User Name: {userModal.name}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              Email: {userModal.email}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              Cart: {userModal?.cart?.length}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              Total Orders: {userModal?.orders?.length}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              Orders Shipped: {shippedOrders}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              Orders Processing: {processingOrders}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              Total Payment: ${totalPaid}
+            </Typography>
+          </Box>
+        </Modal>
       </Box>
     </>
   );
