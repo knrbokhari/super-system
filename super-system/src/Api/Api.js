@@ -23,26 +23,26 @@ export const appApi = createApi({
     }),
 
     // creating product
-    // createProduct: builder.mutation({
-    //   query: (product) => ({
-    //     url: "/products",
-    //     body: product,
-    //     method: "POST",
-    //     headers: { Authorization: token },
-    //   }),
-    // }),
+    createProduct: builder.mutation({
+      query: (product) => ({
+        url: "/products",
+        body: product,
+        method: "POST",
+        headers: { Authorization: token },
+      }),
+    }),
 
-    // // delete product
-    // deleteProduct: builder.mutation({
-    //   query: ({ product_id, user_id }) => ({
-    //     url: `/products/${product_id}`,
-    //     headers: { Authorization: token },
-    //     body: {
-    //       user_id,
-    //     },
-    //     method: "DELETE",
-    //   }),
-    // }),
+    // delete product
+    deleteProduct: builder.mutation({
+      query: ({ product_id, user_id }) => ({
+        url: `/products/${product_id}`,
+        headers: { Authorization: token },
+        body: {
+          user_id,
+        },
+        method: "DELETE",
+      }),
+    }),
 
     // update product
     updateProduct: builder.mutation({
@@ -117,13 +117,8 @@ export const appApi = createApi({
 
 export const {
   useLoginMutation,
-  //   useCreateProductMutation,
-  //   useAddToCartMutation,
-  //   useRemoveFromCartMutation,
-  //   useIncreaseCartProductMutation,
-  //   useDecreaseCartProductMutation,
-  //   useCreateOrderMutation,
-  //   useDeleteProductMutation,
+  useCreateProductMutation,
+  useDeleteProductMutation,
   useUpdateProductMutation,
   //   useUpdateNotificationsMutation,
 } = appApi;
