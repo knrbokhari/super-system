@@ -9,6 +9,7 @@ import Orders from "../pages/Orders/Orders";
 import Notifications from "../pages/Notifications/Notifications";
 import ComingSoon from "../pages/ComingSoon/ComingSoon";
 import EditProduct from "../pages/EditProduct/EditProduct";
+import NewProduct from "../pages/NewProduct/NewProduct";
 
 const AllRoutes = [
   {
@@ -63,7 +64,7 @@ const AllRoutes = [
       },
       {
         path: "/product/create",
-        element: <ComingSoon />,
+        element: <NewProduct />,
       },
     ],
   },

@@ -4,17 +4,15 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 
-const New = ({ title }) => {
+const NewProduct = ({ title }) => {
   const [file, setFile] = useState("");
 
   return (
     <div className="new">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="newContainer">
-        <Navbar />
-        <div className="top">
-          <h1>{title}</h1>
-        </div>
+        {/* <Navbar /> */}
+        <div className="top">{/* <h1>{title}</h1> */}</div>
         <div className="bottom">
           <div className="left">
             <img
@@ -79,4 +77,4 @@ const New = ({ title }) => {
   );
 };
 
-export default New;
+export default NewProduct;

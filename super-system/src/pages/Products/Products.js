@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -15,6 +16,7 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  TextField,
   Toolbar,
   Tooltip,
   Typography,
@@ -33,7 +35,6 @@ import { logout } from "../../Features/UserSlice";
 import Loading from "../../components/Loading/Loading";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
-import { red } from "@mui/material/colors";
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -45,11 +46,11 @@ const descendingComparator = (a, b, orderBy) => {
   return 0;
 };
 
-function getComparator(order, orderBy) {
+const getComparator = (order, orderBy) => {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}
+};
 
 const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -231,6 +232,7 @@ const Products = () => {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [products, setProducts] = React.useState([]);
+  const [singleProduct, setSingleProduct] = React.useState(null);
   const [pageLoading, setLoading] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -261,8 +263,17 @@ const Products = () => {
     return <Loading />;
   }
 
-  const handelEditProduct = (id) => {
+  const handleEditProduct = (id) => {
     navigate(`/product/${id}`);
+  };
+
+  const handleSingleProduct = (name) => {
+    const product = products.find((p) => p.name === name);
+    if (!!product) {
+      setSingleProduct([product]);
+    } else {
+      setSingleProduct(null);
+    }
   };
 
   const handleRequestSort = (event, property) => {
@@ -273,7 +284,9 @@ const Products = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = products.map((n) => n.name);
+      const newSelected = (singleProduct ? singleProduct : products).map(
+        (n) => n.name
+      );
       setSelected(newSelected);
       return;
     }
@@ -352,7 +365,33 @@ const Products = () => {
           </Grid>
         </Grid>
 
-        <Paper sx={{ width: "100%", mb: 2 }}>
+        <Grid container spacing={2}>
+          <Grid item md={8}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={products?.map((i) => i.name)}
+              onChange={(event, value) => handleSingleProduct(value)}
+              fullWidth
+              renderInput={(params) => (
+                <TextField {...params} label="Product" />
+              )}
+            />
+          </Grid>
+          <Grid item md={4}>
+            <Button
+              variant="contained"
+              color="success"
+              sx={{ height: "55px", fontSize: "18px" }}
+              fullWidth
+              onClick={() => navigate("/product/create")}
+            >
+              Add Product
+            </Button>
+          </Grid>
+        </Grid>
+
+        <Paper sx={{ width: "100%", mb: 2, mt: 3 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
             <Table
@@ -366,23 +405,28 @@ const Products = () => {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={products.length}
+                rowCount={
+                  singleProduct ? singleProduct.length : products.length
+                }
               />
               <TableBody>
-                {stableSort(products, getComparator(order, orderBy))
+                {stableSort(
+                  singleProduct ? singleProduct : products,
+                  getComparator(order, orderBy)
+                )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
+                    const isItemSelected = isSelected(row?.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.name)}
+                        onClick={(event) => handleClick(event, row?.name)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.name}
+                        key={row?.name}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
@@ -400,12 +444,12 @@ const Products = () => {
                           scope="row"
                           padding="none"
                         >
-                          {row.name}
+                          {row?.name}
                         </TableCell>
-                        <TableCell align="left">{row.category}</TableCell>
-                        <TableCell align="right">{row.price}</TableCell>
-                        <TableCell align="right">{row.quantity}</TableCell>
-                        <TableCell align="right">{row.totalSell}</TableCell>
+                        <TableCell align="left">{row?.category}</TableCell>
+                        <TableCell align="right">{row?.price}</TableCell>
+                        <TableCell align="right">{row?.quantity}</TableCell>
+                        <TableCell align="right">{row?.totalSell}</TableCell>
                         <TableCell align="right">
                           <Stack direction="row" spacing={1}>
                             <IconButton aria-label="view">
@@ -414,7 +458,7 @@ const Products = () => {
                             <IconButton
                               aria-label="edit"
                               color="primary"
-                              onClick={() => handelEditProduct(row._id)}
+                              onClick={() => handleEditProduct(row?._id)}
                             >
                               <EditIcon />
                             </IconButton>

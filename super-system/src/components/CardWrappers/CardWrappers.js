@@ -42,11 +42,11 @@ const CardWrappers = ({ text, items, icon }) => {
                     gutterBottom
                     variant="h4"
                     component="div"
-                    sx={{ mb: -0.5 }}
+                    sx={{ mb: -0.5, color: "#FFF" }}
                   >
                     {items}
                   </Typography>
-                  <Typography variant="h6" color="text.secondary">
+                  <Typography variant="h6" sx={{ color: "#FFF" }}>
                     {text}
                   </Typography>
                 </Box>
