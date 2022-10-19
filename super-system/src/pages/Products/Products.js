@@ -6,6 +6,7 @@ import {
   Checkbox,
   Grid,
   IconButton,
+  Modal,
   Paper,
   Stack,
   Table,
@@ -35,6 +36,13 @@ import { logout } from "../../Features/UserSlice";
 import Loading from "../../components/Loading/Loading";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
+import { useTheme } from "@mui/material/styles";
+import { useDeleteProductMutation } from "../../Api/Api";
+import { toast } from "react-toastify";
+import SwipeableViews from "react-swipeable-views";
+import { autoPlay } from "react-swipeable-views-utils";
+
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -223,8 +231,21 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  borderRadius: "12px",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Products = () => {
   const admin = useSelector((state) => state.user);
+  const [deletProduct, { isLoading, isSuccess }] = useDeleteProductMutation();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -236,6 +257,17 @@ const Products = () => {
   const [pageLoading, setLoading] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const [openDelectModal, setOpenDelectModal] = React.useState(false);
+  const [delectProduct, setDelectProduct] = React.useState(null);
+  const [viewProduct, setViewProduct] = React.useState(null);
+  const theme = useTheme();
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleOpenDelectModal = () => setOpenDelectModal(true);
+  const handleCloseDelectModal = () => setOpenDelectModal(false);
 
   useEffect(() => {
     setLoading(true);
@@ -257,11 +289,23 @@ const Products = () => {
           navigate("/");
         }
       });
-  }, []);
+  }, [isSuccess]);
 
-  if (pageLoading) {
+  const handleStepChange = (step) => {
+    setActiveStep(step);
+  };
+
+  console.log(viewProduct);
+
+  if (pageLoading || isLoading) {
     return <Loading />;
   }
+
+  const handleDeleteProduct = (id, name) => {
+    deletProduct({ product_id: id });
+    toast(`${name} has been Deleted`);
+    handleCloseDelectModal();
+  };
 
   const handleEditProduct = (id) => {
     navigate(`/product/${id}`);
@@ -324,10 +368,10 @@ const Products = () => {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
 
+  console.log(viewProduct?.images);
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -452,8 +496,11 @@ const Products = () => {
                         <TableCell align="right">{row?.totalSell}</TableCell>
                         <TableCell align="right">
                           <Stack direction="row" spacing={1}>
-                            <IconButton aria-label="view">
-                              <VisibilityIcon />
+                            <IconButton
+                              aria-label="view"
+                              onClick={() => setViewProduct(row)}
+                            >
+                              <VisibilityIcon onClick={handleOpen} />
                             </IconButton>
                             <IconButton
                               aria-label="edit"
@@ -462,11 +509,13 @@ const Products = () => {
                             >
                               <EditIcon />
                             </IconButton>
+
                             <IconButton
                               sx={{ color: "red" }}
                               aria-label="delete"
+                              onClick={() => setDelectProduct(row)}
                             >
-                              <DeleteIcon />
+                              <DeleteIcon onClick={handleOpenDelectModal} />
                             </IconButton>
                           </Stack>
                         </TableCell>
@@ -496,6 +545,93 @@ const Products = () => {
           />
         </Paper>
       </Box>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} style={{ width: "800px" }}>
+          <Grid container spacing={2}>
+            <Grid item md={6}>
+              <AutoPlaySwipeableViews
+                axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+                index={activeStep}
+                onChangeIndex={handleStepChange}
+                enableMouseEvents
+              >
+                {viewProduct?.images?.map((step, index) => (
+                  <div key={index}>
+                    {Math.abs(activeStep - index) <= 2 ? (
+                      <Box
+                        component="img"
+                        sx={{
+                          height: 255,
+                          display: "block",
+                          maxWidth: 400,
+                          overflow: "hidden",
+                          width: "100%",
+                        }}
+                        src={step.url}
+                        alt="img"
+                      />
+                    ) : null}
+                  </div>
+                ))}
+              </AutoPlaySwipeableViews>
+            </Grid>
+            <Grid item md={6}>
+              <Typography>Name: {viewProduct?.name}</Typography>
+              <Typography>Price: ${viewProduct?.price}</Typography>
+              <Typography>Category: {viewProduct?.category}</Typography>
+              <Typography>Quantity: {viewProduct?.quantity}</Typography>
+              <Typography>Total Sell: {viewProduct?.totalSell}</Typography>
+            </Grid>
+          </Grid>
+          <Typography sx={{ mt: 1 }}>
+            Description: {viewProduct?.description}
+          </Typography>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openDelectModal}
+        onClose={handleCloseDelectModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Are you sure?
+          </Typography>
+          <Typography id="modal-modal-description">
+            Do you want to Delete {delectProduct?.name}?
+          </Typography>
+          <Grid container spacing={2} sx={{ mt: 1, justifyContent: "center" }}>
+            <Grid item sx={6}>
+              <Button
+                variant="contained"
+                color="info"
+                onClick={handleCloseDelectModal}
+              >
+                cancel
+              </Button>
+            </Grid>
+            <Grid item sx={6}>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() =>
+                  handleDeleteProduct(delectProduct?._id, delectProduct?.name)
+                }
+              >
+                delete
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
     </>
   );
 };
