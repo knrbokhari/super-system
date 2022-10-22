@@ -51,56 +51,6 @@ export const appApi = createApi({
       }),
     }),
 
-    // // add to cart
-    // addToCart: builder.mutation({
-    //   query: (cartInfo) => ({
-    //     url: "/cart/add-to-cart",
-    //     headers: { Authorization: token },
-    //     body: cartInfo,
-    //     method: "POST",
-    //   }),
-    // }),
-
-    // // remove from cart
-    // removeFromCart: builder.mutation({
-    //   query: (body) => ({
-    //     url: "/cart/remove-from-cart",
-    //     headers: { Authorization: token },
-    //     body,
-    //     method: "POST",
-    //   }),
-    // }),
-
-    // // increase cart
-    // increaseCartProduct: builder.mutation({
-    //   query: (body) => ({
-    //     url: "/cart/increase-cart",
-    //     headers: { Authorization: token },
-    //     body,
-    //     method: "POST",
-    //   }),
-    // }),
-
-    // // decrease cart
-    // decreaseCartProduct: builder.mutation({
-    //   query: (body) => ({
-    //     url: "/cart/decrease-cart",
-    //     headers: { Authorization: token },
-    //     body,
-    //     method: "POST",
-    //   }),
-    // }),
-
-    // // create order
-    // createOrder: builder.mutation({
-    //   query: (body) => ({
-    //     url: "/orders",
-    //     headers: { Authorization: token },
-    //     method: "POST",
-    //     body,
-    //   }),
-    // }),
-
     // // update Notifications
     // updateNotifications: builder.mutation({
     //   query: (id) => ({

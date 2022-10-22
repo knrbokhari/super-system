@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
+  Button,
   Checkbox,
   Grid,
   IconButton,
@@ -25,33 +26,13 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import CardWrappers from "../../components/CardWrappers/CardWrappers";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import Chart from "../../components/Chart/Chart";
-
-const createData = (name, calories, fat, carbs, protein, sales) => {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    sales,
-  };
-};
-
-const rows = [
-  createData("Cupcake", "305", 3.7, 67, 4.3, 4.3),
-  createData("Donut", "452", 25.0, 51, 4.9, 4.9),
-  createData("Eclair", "262", 16.0, 24, 6.0, 6.0),
-  createData("Frozen yoghurt", "159", 6.0, 24, 4.0, 4.0),
-  createData("Gingerbread", "356", 16.0, 49, 3.9, 3.9),
-  createData("Honeycomb", "408", 3.2, 87, 6.5, 6.5),
-  createData("Ice cream sandwich", "237", 9.0, 37, 4.3, 4.3),
-  createData("Jelly Bean", "375", 0.0, 94, 0.0, 0.0),
-  createData("KitKat", "518", 26.0, 65, 7.0, 7.0),
-  createData("Lollipop", "392", 0.2, 98, 0.0, 0.0),
-  createData("Marshmallow", "318", 0, 81, 2.0, 2.0),
-  createData("Nougat", "360", 19.0, 9, 37.0, 37.0),
-  createData("Oreo", "437", 18.0, 63, 4.0, 4.0),
-];
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "../../axios";
+import Loading from "../../components/Loading/Loading";
+import { logout } from "../../Features/UserSlice";
+import moment from "moment";
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -70,50 +51,50 @@ const getComparator = (order, orderBy) => {
 };
 
 const stableSort = (array, comparator) => {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  const stabilizedThis = array?.map((el, index) => [el, index]);
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
       return order;
     }
     return a[1] - b[1];
   });
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis?.map((el) => el[0]);
 };
 
 const headCells = [
   {
-    id: "name",
+    id: "email",
     numeric: false,
     disablePadding: true,
-    label: "User Name",
-  },
-  {
-    id: "calories",
-    numeric: false,
-    disablePadding: false,
     label: "Email",
   },
   {
-    id: "fat",
+    id: "createdAt",
     numeric: false,
+    disablePadding: false,
+    label: "Date",
+  },
+  {
+    id: "count",
+    numeric: true,
     disablePadding: false,
     label: "Quantitys",
   },
   {
-    id: "carbs",
+    id: "total",
     numeric: true,
     disablePadding: false,
     label: "Total Price",
   },
   {
-    id: "protein",
+    id: "status",
     numeric: true,
     disablePadding: false,
     label: "Status",
   },
   {
-    id: "sales",
+    id: "actions",
     numeric: true,
     disablePadding: false,
     label: "Actions",
@@ -247,6 +228,37 @@ const Orders = () => {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [allOrders, setAllOrders] = useState(null);
+  const [pageLoading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const token = `Bearer ${Cookies.get("token")}`;
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/orders`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(({ data }) => {
+        setLoading(false);
+        setAllOrders(data);
+      })
+      .catch((e) => {
+        setLoading(false);
+        if (e.response.status === 401 || e.response.status === 403) {
+          dispatch(logout());
+          navigate("/");
+        }
+      });
+  }, []);
+
+  if (pageLoading) {
+    return <Loading />;
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -256,7 +268,7 @@ const Orders = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = allOrders?.map((n) => n.name);
       setSelected(newSelected);
       return;
     }
@@ -294,9 +306,8 @@ const Orders = () => {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allOrders?.length) : 0;
 
   return (
     <>
@@ -350,13 +361,13 @@ const Orders = () => {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rows.length}
+                rowCount={allOrders?.length}
               />
               <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
+                {stableSort(allOrders, getComparator(order, orderBy))
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  ?.map((row, index) => {
+                    const isItemSelected = isSelected(row?.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
@@ -366,7 +377,7 @@ const Orders = () => {
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.name}
+                        key={row?._id}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
@@ -384,13 +395,24 @@ const Orders = () => {
                           scope="row"
                           padding="none"
                         >
-                          {row.name}
+                          {row?.owner?.email}
                         </TableCell>
-                        <TableCell align="left">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
-                        <TableCell align="right">{row.sales}</TableCell>
+                        <TableCell align="left">
+                          {moment(row?.createdAt).format("ll")}
+                        </TableCell>
+                        <TableCell align="right">{row?.count}</TableCell>
+                        <TableCell align="right">{row?.total}</TableCell>
+                        <TableCell align="right">
+                          <Button
+                            variant="contained"
+                            disabled={row?.status !== "processing"}
+                          >
+                            {row?.status}
+                          </Button>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Button>View</Button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -409,7 +431,7 @@ const Orders = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={allOrders?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

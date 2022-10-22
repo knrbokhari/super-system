@@ -295,8 +295,6 @@ const Products = () => {
     setActiveStep(step);
   };
 
-  console.log(viewProduct);
-
   if (pageLoading || isLoading) {
     return <Loading />;
   }
@@ -371,7 +369,6 @@ const Products = () => {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
 
-  console.log(viewProduct?.images);
   return (
     <>
       <Box sx={{ width: "100%" }}>
