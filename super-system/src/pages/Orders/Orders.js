@@ -33,6 +33,7 @@ import axios from "../../axios";
 import Loading from "../../components/Loading/Loading";
 import { logout } from "../../Features/UserSlice";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -230,6 +231,7 @@ const Orders = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [allOrders, setAllOrders] = useState(null);
   const [pageLoading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -246,6 +248,7 @@ const Orders = () => {
       .then(({ data }) => {
         setLoading(false);
         setAllOrders(data);
+        // console.log(data[0]);
       })
       .catch((e) => {
         setLoading(false);
@@ -254,11 +257,39 @@ const Orders = () => {
           navigate("/");
         }
       });
-  }, []);
+  }, [isSuccess]);
 
   if (pageLoading) {
     return <Loading />;
   }
+
+  const handleShippedOrder = async (id, ownerId) => {
+    setLoading(true);
+    await axios
+      .patch(
+        `/orders/${id}/mark-shipped`,
+        { ownerId: ownerId },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => {
+        setLoading(false);
+        setIsSuccess(!isSuccess);
+        if (res.data) toast.success("Order has been shipped successfully.");
+      })
+      .catch((e) => {
+        setLoading(false);
+        console.log(e);
+        if (e.response.status === 401 || e.response.status === 403) {
+          dispatch(logout());
+          navigate("/");
+          Cookies.remove("token");
+        }
+      });
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -406,6 +437,9 @@ const Orders = () => {
                           <Button
                             variant="contained"
                             disabled={row?.status !== "processing"}
+                            onClick={() =>
+                              handleShippedOrder(row?._id, row?.owner?._id)
+                            }
                           >
                             {row?.status}
                           </Button>
