@@ -5,6 +5,7 @@ import {
   Checkbox,
   Grid,
   IconButton,
+  Modal,
   Paper,
   Table,
   TableBody,
@@ -34,6 +35,17 @@ import Loading from "../../components/Loading/Loading";
 import { logout } from "../../Features/UserSlice";
 import moment from "moment";
 import { toast } from "react-toastify";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -230,10 +242,14 @@ const Orders = () => {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [allOrders, setAllOrders] = useState(null);
+  const [orders, setOrders] = useState(null);
   const [pageLoading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const token = `Bearer ${Cookies.get("token")}`;
 
@@ -340,6 +356,7 @@ const Orders = () => {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allOrders?.length) : 0;
 
+  console.log(order);
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -398,7 +415,7 @@ const Orders = () => {
                 {stableSort(allOrders, getComparator(order, orderBy))
                   ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   ?.map((row, index) => {
-                    const isItemSelected = isSelected(row?.name);
+                    const isItemSelected = isSelected(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
@@ -408,7 +425,7 @@ const Orders = () => {
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row?._id}
+                        key={row.name}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
@@ -436,6 +453,7 @@ const Orders = () => {
                         <TableCell align="right">
                           <Button
                             variant="contained"
+                            color="secondary"
                             disabled={row?.status !== "processing"}
                             onClick={() =>
                               handleShippedOrder(row?._id, row?.owner?._id)
@@ -444,8 +462,14 @@ const Orders = () => {
                             {row?.status}
                           </Button>
                         </TableCell>
-                        <TableCell align="right">
-                          <Button>View</Button>
+                        <TableCell align="right" onClick={() => setOrder(row)}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleOpen}
+                          >
+                            View
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );
@@ -473,6 +497,42 @@ const Orders = () => {
           />
         </Paper>
       </Box>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Order Details
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+            Name: {order?.owner?.name}
+          </Typography>
+          <Typography id="modal-modal-description">
+            Email: {order?.owner?.email}
+          </Typography>
+          {order?.products?.map((pro) => (
+            <Typography id="modal-modal-description">
+              Item: {pro?.cartId?.product?.name}
+            </Typography>
+          ))}
+          <Typography id="modal-modal-description">
+            Quantity: {order?.count}
+          </Typography>
+          <Typography id="modal-modal-description">
+            Total: {order?.total}
+          </Typography>
+          <Typography id="modal-modal-description">
+            Address: {order?.address}, {order?.country}.
+          </Typography>
+          <Typography id="modal-modal-description">
+            Status: {order?.status}
+          </Typography>
+        </Box>
+      </Modal>
     </>
   );
 };
