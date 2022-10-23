@@ -10,6 +10,7 @@ import Notifications from "../pages/Notifications/Notifications";
 import ComingSoon from "../pages/ComingSoon/ComingSoon";
 import EditProduct from "../pages/EditProduct/EditProduct";
 import NewProduct from "../pages/NewProduct/NewProduct";
+import OrderBarChart from "../components/BarChart/BarChart";
 
 const AllRoutes = [
   {
@@ -19,6 +20,10 @@ const AllRoutes = [
       {
         path: "/",
         element: <Login />,
+      },
+      {
+        path: "/bar",
+        element: <OrderBarChart />,
       },
     ],
   },

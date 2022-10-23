@@ -26,7 +26,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CardWrappers from "../../components/CardWrappers/CardWrappers";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import Chart from "../../components/Chart/Chart";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -35,6 +34,7 @@ import Loading from "../../components/Loading/Loading";
 import { logout } from "../../Features/UserSlice";
 import moment from "moment";
 import { toast } from "react-toastify";
+import OrderBarChart from "../../components/BarChart/BarChart";
 
 const style = {
   position: "absolute",
@@ -242,7 +242,7 @@ const Orders = () => {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [allOrders, setAllOrders] = useState(null);
-  const [orders, setOrders] = useState(null);
+  const [singalOrder, setSingelOrder] = useState(null);
   const [pageLoading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [open, setOpen] = useState(false);
@@ -278,6 +278,14 @@ const Orders = () => {
   if (pageLoading) {
     return <Loading />;
   }
+
+  const approvedOrder = allOrders?.filter(
+    (order) => order.status === "shipped"
+  ).length;
+
+  const processingOrder = allOrders?.filter(
+    (order) => order.status === "processing"
+  ).length;
 
   const handleShippedOrder = async (id, ownerId) => {
     setLoading(true);
@@ -356,42 +364,39 @@ const Orders = () => {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allOrders?.length) : 0;
 
-  console.log(order);
   return (
     <>
       <Box sx={{ width: "100%" }}>
         <Grid container spacing={2}>
           <Grid item md={4}>
-            <Grid item md={12}>
-              <Box sx={{ mb: 4 }}>
-                <CardWrappers
-                  text="Totals Orders"
-                  items={500}
-                  icon={<LocalShippingIcon />}
-                />
-              </Box>
-            </Grid>
-            <Grid item md={12}>
-              <Box sx={{ mb: 4 }}>
-                <CardWrappers
-                  text="Approved  Orders"
-                  items={500}
-                  icon={<LocalShippingIcon />}
-                />
-              </Box>
-            </Grid>
-            <Grid item md={12}>
-              <Box>
-                <CardWrappers
-                  text="Pending  Orders"
-                  items={500}
-                  icon={<LocalShippingIcon />}
-                />
-              </Box>
-            </Grid>
+            <Box sx={{ mb: 4 }}>
+              <CardWrappers
+                text="Totals Orders"
+                items={allOrders?.length}
+                icon={<LocalShippingIcon />}
+              />
+            </Box>
           </Grid>
-          <Grid item md={8}>
-            <Chart title={"Last Month's Order"} />
+          <Grid item md={4}>
+            <Box sx={{ mb: 4 }}>
+              <CardWrappers
+                text="Approved  Orders"
+                items={approvedOrder}
+                icon={<LocalShippingIcon />}
+              />
+            </Box>
+          </Grid>
+          <Grid item md={4}>
+            <Box>
+              <CardWrappers
+                text="Pending  Orders"
+                items={processingOrder}
+                icon={<LocalShippingIcon />}
+              />
+            </Box>
+          </Grid>
+          <Grid item md={12}>
+            <OrderBarChart title={"Last 7 day's Order"} />
           </Grid>
         </Grid>
 
@@ -462,7 +467,10 @@ const Orders = () => {
                             {row?.status}
                           </Button>
                         </TableCell>
-                        <TableCell align="right" onClick={() => setOrder(row)}>
+                        <TableCell
+                          align="right"
+                          onClick={() => setSingelOrder(row)}
+                        >
                           <Button
                             variant="contained"
                             color="primary"
@@ -509,27 +517,27 @@ const Orders = () => {
             Order Details
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-            Name: {order?.owner?.name}
+            Name: {singalOrder?.owner?.name}
           </Typography>
           <Typography id="modal-modal-description">
-            Email: {order?.owner?.email}
+            Email: {singalOrder?.owner?.email}
           </Typography>
-          {order?.products?.map((pro) => (
+          {singalOrder?.products?.map((pro) => (
             <Typography id="modal-modal-description">
               Item: {pro?.cartId?.product?.name}
             </Typography>
           ))}
           <Typography id="modal-modal-description">
-            Quantity: {order?.count}
+            Quantity: {singalOrder?.count}
           </Typography>
           <Typography id="modal-modal-description">
-            Total: {order?.total}
+            Total: {singalOrder?.total}
           </Typography>
           <Typography id="modal-modal-description">
-            Address: {order?.address}, {order?.country}.
+            Address: {singalOrder?.address}, {singalOrder?.country}.
           </Typography>
           <Typography id="modal-modal-description">
-            Status: {order?.status}
+            Status: {singalOrder?.status}
           </Typography>
         </Box>
       </Modal>
