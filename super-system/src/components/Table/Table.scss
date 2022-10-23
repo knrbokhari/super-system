@@ -16,13 +16,16 @@
     padding: 5px;
     border-radius: 5px;
 
-    &.Approved {
+    &.processing {
       color: green;
       background-color: rgba(0, 128, 0, 0.151);
+      text-transform: uppercase;
     }
-    &.Pending {
-      color: goldenrod;
-      background-color: rgba(189, 189, 3, 0.103);
+    &.shipped {
+      color: rgb(73, 73, 73);
+      font-weight: 600;
+      text-transform: uppercase;
+      background-color: rgba(175, 175, 175, 0.5);
     }
   }
 }

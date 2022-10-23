@@ -10,10 +10,10 @@ import { Cell, Pie, PieChart, Tooltip, ResponsiveContainer } from "recharts";
 
 const Featured = () => {
   const data = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
+    { name: "Group A", value: 100 },
+    { name: "sold", value: 60 },
+    // { name: "Group C", value: 300 },
+    // { name: "Group D", value: 200 },
   ];
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -47,16 +47,15 @@ const Featured = () => {
     <>
       <Box className="chart">
         <Typography className="chart-title">Total Revenue</Typography>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={400}>
           <PieChart>
             <Pie
-              width={"100%"}
               data={data}
               cx="50%"
-              cy="40%"
+              cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
-              outerRadius={100}
+              // outerRadius={150}
               fill="#8884d8"
               dataKey="value"
             >
@@ -72,45 +71,6 @@ const Featured = () => {
         </ResponsiveContainer>
       </Box>
     </>
-    // <div className="featured">
-    //   <div className="top">
-    //     <h1 className="title">Total Revenue</h1>
-    //     <MoreVertIcon fontSize="small" />
-    //   </div>
-    //   <div className="bottom">
-    //     <div className="featuredChart">
-    //       <CircularProgressbar value={70} text={"70%"} strokeWidth={5} />
-    //     </div>
-    //     <p className="title">Total sales made today</p>
-    //     <p className="amount">$420</p>
-    //     <p className="desc">
-    //       Previous transactions processing. Last payments may not be included.
-    //     </p>
-    // <div className="summary">
-    //   <div className="item">
-    //     <div className="itemTitle">Target</div>
-    //     <div className="itemResult negative">
-    //       <KeyboardArrowDownIcon fontSize="small" />
-    //       <div className="resultAmount">$12.4k</div>
-    //     </div>
-    //   </div>
-    //   <div className="item">
-    //     <div className="itemTitle">Last Week</div>
-    //     <div className="itemResult positive">
-    //       <KeyboardArrowUpOutlinedIcon fontSize="small" />
-    //       <div className="resultAmount">$12.4k</div>
-    //     </div>
-    //   </div>
-    //   <div className="item">
-    //     <div className="itemTitle">Last Month</div>
-    //     <div className="itemResult positive">
-    //       <KeyboardArrowUpOutlinedIcon fontSize="small" />
-    //       <div className="resultAmount">$12.4k</div>
-    //     </div>
-    //   </div>
-    // </div>*
-    //   </div>
-    // </div>
   );
 };
 

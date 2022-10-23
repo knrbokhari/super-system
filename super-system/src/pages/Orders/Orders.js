@@ -454,7 +454,7 @@ const Orders = () => {
                           {moment(row?.createdAt).format("ll")}
                         </TableCell>
                         <TableCell align="right">{row?.count}</TableCell>
-                        <TableCell align="right">{row?.total}</TableCell>
+                        <TableCell align="right">${row?.total}</TableCell>
                         <TableCell align="right">
                           <Button
                             variant="contained"

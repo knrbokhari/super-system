@@ -24,10 +24,10 @@ const Chart = ({ aspect, title }) => {
   return (
     <Box className="chart">
       <Typography className="chart-title">{title}</Typography>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={400}>
         <AreaChart
-          width={100}
-          height={250}
+          // width={100}
+          // height={250}
           data={data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
