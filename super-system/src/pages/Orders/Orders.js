@@ -264,7 +264,7 @@ const Orders = () => {
       .then(({ data }) => {
         setLoading(false);
         setAllOrders(data);
-        console.log(data[0]);
+        // console.log(data[0]);
       })
       .catch((e) => {
         setLoading(false);

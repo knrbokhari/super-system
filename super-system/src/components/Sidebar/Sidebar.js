@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./Sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
@@ -10,7 +10,6 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link, useNavigate } from "react-router-dom";
-import { DarkModeContext } from "../../context/darkModeContext";
 import { Divider, List, ListItem, ListItemText } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -19,8 +18,6 @@ import Cookies from "js-cookie";
 import { logout } from "../../Features/UserSlice";
 
 const Sidebar = ({ open }) => {
-  // const { dispatch } = useContext(DarkModeContext);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -36,7 +33,14 @@ const Sidebar = ({ open }) => {
         <ListItem disablePadding sx={{ display: "block" }}>
           <Link
             to="/dashboard"
-            style={{ textDecoration: "none", color: "red" }}
+            style={{
+              textDecoration: "none",
+              color: `${
+                window.location.pathname === "/dashboard"
+                  ? "#9c27b0"
+                  : "#0000008a"
+              }`,
+            }}
           >
             <ListItemButton
               sx={{
@@ -52,7 +56,15 @@ const Sidebar = ({ open }) => {
                   justifyContent: "center",
                 }}
               >
-                <DashboardIcon />
+                <DashboardIcon
+                  style={{
+                    color: `${
+                      window.location.pathname === "/dashboard"
+                        ? "#9c27b0"
+                        : "#0000008a"
+                    }`,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText
                 primary="Dashboard"
@@ -63,7 +75,15 @@ const Sidebar = ({ open }) => {
         </ListItem>
 
         <ListItem disablePadding sx={{ display: "block" }}>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          <Link
+            to="/users"
+            style={{
+              textDecoration: "none",
+              color: `${
+                window.location.pathname === "/users" ? "#9c27b0" : "#0000008a"
+              }`,
+            }}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -78,7 +98,15 @@ const Sidebar = ({ open }) => {
                   justifyContent: "center",
                 }}
               >
-                <PersonRoundedIcon />
+                <PersonRoundedIcon
+                  style={{
+                    color: `${
+                      window.location.pathname === "/users"
+                        ? "#9c27b0"
+                        : "#0000008a"
+                    }`,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText primary="Users" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -86,7 +114,17 @@ const Sidebar = ({ open }) => {
         </ListItem>
 
         <ListItem disablePadding sx={{ display: "block" }}>
-          <Link to="/products" style={{ textDecoration: "none" }}>
+          <Link
+            to="/products"
+            style={{
+              textDecoration: "none",
+              color: `${
+                window.location.pathname === "/products"
+                  ? "#9c27b0"
+                  : "#0000008a"
+              }`,
+            }}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -101,7 +139,15 @@ const Sidebar = ({ open }) => {
                   justifyContent: "center",
                 }}
               >
-                <StoreIcon />
+                <StoreIcon
+                  style={{
+                    color: `${
+                      window.location.pathname === "/products"
+                        ? "#9c27b0"
+                        : "#0000008a"
+                    }`,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText primary="Products" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -109,7 +155,15 @@ const Sidebar = ({ open }) => {
         </ListItem>
 
         <ListItem disablePadding sx={{ display: "block" }}>
-          <Link to="/orders" style={{ textDecoration: "none" }}>
+          <Link
+            to="/orders"
+            style={{
+              textDecoration: "none",
+              color: `${
+                window.location.pathname === "/orders" ? "#9c27b0" : "#0000008a"
+              }`,
+            }}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -124,7 +178,15 @@ const Sidebar = ({ open }) => {
                   justifyContent: "center",
                 }}
               >
-                <LocalShippingIcon />
+                <LocalShippingIcon
+                  style={{
+                    color: `${
+                      window.location.pathname === "/orders"
+                        ? "#9c27b0"
+                        : "#0000008a"
+                    }`,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText primary="Orders" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -134,7 +196,17 @@ const Sidebar = ({ open }) => {
       <Divider />
       <List>
         <ListItem disablePadding sx={{ display: "block" }}>
-          <Link to="/notifications" style={{ textDecoration: "none" }}>
+          <Link
+            to="/notifications"
+            style={{
+              textDecoration: "none",
+              color: `${
+                window.location.pathname === "/notifications"
+                  ? "#9c27b0"
+                  : "#0000008a"
+              }`,
+            }}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -149,7 +221,15 @@ const Sidebar = ({ open }) => {
                   justifyContent: "center",
                 }}
               >
-                <NotificationsNoneIcon />
+                <NotificationsNoneIcon
+                  style={{
+                    color: `${
+                      window.location.pathname === "/notifications"
+                        ? "#9c27b0"
+                        : "#0000008a"
+                    }`,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText
                 primary="Notifications"
@@ -160,7 +240,15 @@ const Sidebar = ({ open }) => {
         </ListItem>
 
         <ListItem disablePadding sx={{ display: "block" }}>
-          <Link to="/logs" style={{ textDecoration: "none" }}>
+          <Link
+            to="/logs"
+            style={{
+              textDecoration: "none",
+              color: `${
+                window.location.pathname === "/logs" ? "#9c27b0" : "#0000008a"
+              }`,
+            }}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -175,7 +263,16 @@ const Sidebar = ({ open }) => {
                   justifyContent: "center",
                 }}
               >
-                <InsertChartIcon />
+                <InsertChartIcon
+                  style={{
+                    textDecoration: "none",
+                    color: `${
+                      window.location.pathname === "/logs"
+                        ? "#9c27b0"
+                        : "#0000008a"
+                    }`,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText
                 primary="Error Logs"
@@ -186,7 +283,17 @@ const Sidebar = ({ open }) => {
         </ListItem>
 
         <ListItem disablePadding sx={{ display: "block" }}>
-          <Link to="/profile" style={{ textDecoration: "none" }}>
+          <Link
+            to="/profile"
+            style={{
+              textDecoration: "none",
+              color: `${
+                window.location.pathname === "/profile"
+                  ? "#9c27b0"
+                  : "#0000008a"
+              }`,
+            }}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -201,7 +308,15 @@ const Sidebar = ({ open }) => {
                   justifyContent: "center",
                 }}
               >
-                <AccountCircleOutlinedIcon />
+                <AccountCircleOutlinedIcon
+                  style={{
+                    color: `${
+                      window.location.pathname === "/profile"
+                        ? "#9c27b0"
+                        : "#0000008a"
+                    }`,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -209,7 +324,17 @@ const Sidebar = ({ open }) => {
         </ListItem>
 
         <ListItem disablePadding sx={{ display: "block" }}>
-          <Link to="/settings" style={{ textDecoration: "none" }}>
+          <Link
+            to="/settings"
+            style={{
+              textDecoration: "none",
+              color: `${
+                window.location.pathname === "/settings"
+                  ? "#9c27b0"
+                  : "#0000008a"
+              }`,
+            }}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -224,7 +349,15 @@ const Sidebar = ({ open }) => {
                   justifyContent: "center",
                 }}
               >
-                <SettingsApplicationsIcon />
+                <SettingsApplicationsIcon
+                  style={{
+                    color: `${
+                      window.location.pathname === "/settings"
+                        ? "#9c27b0"
+                        : "#0000008a"
+                    }`,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText primary="Settings" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>

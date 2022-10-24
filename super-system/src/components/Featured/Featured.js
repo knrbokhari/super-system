@@ -32,7 +32,7 @@ const Featured = ({ data }) => {
       </text>
     );
   };
-  console.log(data);
+
   return (
     <>
       <Box className="chart">

@@ -280,7 +280,7 @@ const Products = () => {
       .then(({ data }) => {
         setLoading(false);
         setProducts(data);
-        console.log(data[0]);
+        // console.log(data[0]);
       })
       .catch((e) => {
         setLoading(false);
