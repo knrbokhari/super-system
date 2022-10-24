@@ -36,7 +36,7 @@ const Home = () => {
       .then(({ data }) => {
         setLoading(false);
         setDashboardData(data);
-        console.log(data);
+        // console.log(data);
       })
       .catch((e) => {
         setLoading(false);

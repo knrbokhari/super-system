@@ -4,6 +4,7 @@ import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import {
   AppBar,
+  Avatar,
   Badge,
   Box,
   IconButton,
@@ -141,10 +142,21 @@ const Navbar = () => {
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
+                // onClick={handleProfileMenuOpen}
                 color="inherit"
               >
                 <DarkModeOutlinedIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <Avatar src="/broken-image.jpg" />
               </IconButton>
             </Box>
           </Toolbar>

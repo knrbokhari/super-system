@@ -11,7 +11,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
+import { useMediaQuery } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -83,6 +84,15 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const matches = useMediaQuery("(min-width:1000px)");
+
+  React.useEffect(() => {
+    if (matches) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [matches]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -103,7 +113,7 @@ export default function MiniDrawer() {
             onClick={handleDrawerOpen}
             edge="start"
             sx={{
-              marginRight: 5,
+              marginRight: 0,
               ...(open && { display: "none" }),
             }}
           >
