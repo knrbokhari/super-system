@@ -116,7 +116,7 @@ const TableList = () => {
         </TableHead>
         <TableBody>
           {allOrders?.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row?.id}>
               <TableCell className="tableCell">{row._id}</TableCell>
               <TableCell className="tableCell">{row?.owner?.email}</TableCell>
               <TableCell className="tableCell">

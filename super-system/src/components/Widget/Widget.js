@@ -6,11 +6,9 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import { Link } from "react-router-dom";
 
-const Widget = ({ type }) => {
+const Widget = ({ type, link, amount }) => {
   let data;
 
-  //temporary
-  const amount = 100;
   const diff = 20;
 
   switch (type) {
@@ -64,8 +62,8 @@ const Widget = ({ type }) => {
       <div className="widget">
         <div className="left">
           <span className="title">{data.title}</span>
-          <span className="counter">${amount}</span>
-          <Link to={`/`} className="link">
+          <span className="counter">{amount}</span>
+          <Link to={`/${link}`} className="link">
             <span>{data.link}</span>
           </Link>
         </div>

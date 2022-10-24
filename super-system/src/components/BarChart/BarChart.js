@@ -3,12 +3,10 @@ import { Box, Typography } from "@mui/material";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -18,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
 import { logout } from "../../Features/UserSlice";
 
-const OrderBarChart = ({ title = "fjksjfl" }) => {
+const OrderBarChart = ({ title }) => {
   const [data, setData] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +32,7 @@ const OrderBarChart = ({ title = "fjksjfl" }) => {
       })
       .then(({ data }) => {
         setData(data);
-        console.log(data);
+        // console.log(data);
       })
       .catch((e) => {
         if (e.response.status === 401 || e.response.status === 403) {

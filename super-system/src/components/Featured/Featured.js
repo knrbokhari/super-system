@@ -1,21 +1,10 @@
 import React from "react";
 import "./Featured.scss";
-// import MoreVertIcon from "@mui/icons-material/MoreVert";
-// import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-// import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-// import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { Box, Typography } from "@mui/material";
 import { Cell, Pie, PieChart, Tooltip, ResponsiveContainer } from "recharts";
 
-const Featured = () => {
-  const data = [
-    { name: "Group A", value: 100 },
-    { name: "sold", value: 60 },
-    // { name: "Group C", value: 300 },
-    // { name: "Group D", value: 200 },
-  ];
-
+const Featured = ({ data }) => {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   const RADIAN = Math.PI / 180;
@@ -43,10 +32,11 @@ const Featured = () => {
       </text>
     );
   };
+  console.log(data);
   return (
     <>
       <Box className="chart">
-        <Typography className="chart-title">Total Revenue</Typography>
+        <Typography className="chart-title">Total Sales</Typography>
         <ResponsiveContainer width="100%" height={400}>
           <PieChart>
             <Pie
@@ -59,7 +49,7 @@ const Featured = () => {
               fill="#8884d8"
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {data?.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}
