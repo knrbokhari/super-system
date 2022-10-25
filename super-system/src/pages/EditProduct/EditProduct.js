@@ -323,7 +323,7 @@ const EditProduct = () => {
                   variant="contained"
                   color="secondary"
                 >
-                  submit
+                  Submit
                 </Button>
               </Box>
             </form>

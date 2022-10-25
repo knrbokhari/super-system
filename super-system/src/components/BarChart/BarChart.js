@@ -31,7 +31,8 @@ const OrderBarChart = ({ title }) => {
         },
       })
       .then(({ data }) => {
-        setData(data);
+        const chartData = data.reverse();
+        setData(chartData);
         // console.log(data);
       })
       .catch((e) => {
