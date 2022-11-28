@@ -3,7 +3,7 @@
 [Live link](https://supersystem.netlify.app/).
 
 ### Server Side
-[Live link](https://supersystem.netlify.app/).
+[Server Side](https://github.com/knrbokhari/mern-ecommerce/tree/main/server).
 
 ## Technology Used: 
 * ReactJS
