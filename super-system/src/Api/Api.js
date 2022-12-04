@@ -11,7 +11,7 @@ export const appApi = createApi({
   reducerPath: "appApi",
   // baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://calm-beach-92689.herokuapp.com/",
+    baseUrl: "https://ecommerce-server.up.railway.app/",
   }),
   endpoints: (builder) => ({
     login: builder.mutation({
